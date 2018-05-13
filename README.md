@@ -9,5 +9,4 @@ git clone https://github.com/randy3k/LSP-julia.git ~/Library/Application\ Suppor
 git clone https://github.com/randy3k/LSP-julia.git ~/.config/sublime-text-3/Packages/LSP-julia
 ```
 
-`LSP-julia` also depends on a very recent version of [LSP](https://github.com/tomv564/LSP). More precisely, it requires
-https://github.com/tomv564/LSP/pull/316.
+`LSP-julia` also depends on a the current development version of [LSP](https://github.com/tomv564/LSP).

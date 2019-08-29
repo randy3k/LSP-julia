@@ -14,12 +14,10 @@ def julia_pkg_dir():
     else:
         startupinfo = None
 
-    try:
-        return(subprocess.check_output(
-            ["julia", "-e", "print(Pkg.dir())"],
-            startupinfo=startupinfo).decode("utf-8"))
-    except Exception:
-        return ""
+    return subprocess.check_output(
+        ["julia", "-e", "import LanguageServer; print(dirname(dirname(pathof(LanguageServer))))"],
+        startupinfo=startupinfo
+    ).decode("utf-8")
 
 
 class LspJuliaPlugin(LanguageHandler):
@@ -33,13 +31,15 @@ class LspJuliaPlugin(LanguageHandler):
                 "--history-file=no",
                 "-e",
                 "using LanguageServer;" +
-                "server = LanguageServer.LanguageServerInstance(STDIN, STDOUT, false);" +
+                "import SymbolServer;" +
+                "server = LanguageServer.LanguageServerInstance(stdin, stdout, false);" +
+                "server.runlinter = true;" +
                 "run(server);"
             ]
         else:
             command = [
                 "bash",
-                os.path.join(julia_pkg_dir(), "LanguageServer", "contrib", "languageserver.sh")
+                os.path.join(julia_pkg_dir(), "contrib", "languageserver.sh")
             ]
 
         self._config = ClientConfig(
